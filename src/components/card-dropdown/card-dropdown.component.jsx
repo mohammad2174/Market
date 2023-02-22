@@ -3,12 +3,12 @@ import './card-dropdown.styles.scss'
 import CustomButton from '../custom-button/custom-button.component'
 import CardItem from '../card-item/card-item.component'
 import { connect } from 'react-redux'
-import { selectCardItems } from '../../redux/card/card.selectors'
+import { selectCardItems, selectCurrentUser } from '../../redux/card/card.selectors'
 import { createStructuredSelector } from 'reselect'
 import { withRouter } from 'react-router-dom'
 import { toggleCardHidden } from '../../redux/card/card.action'
 
-const CardDropDown = ({cardItems , history , dispatch}) => {
+const CardDropDown = ({cardItems , history , dispatch, user}) => {
     return (
         <div className='card-dropdown'>
            <div className='card-items'>
@@ -20,13 +20,14 @@ const CardDropDown = ({cardItems , history , dispatch}) => {
                }
 
            </div>
-            <CustomButton onClick={() => {history.push('/checkout'); dispatch(toggleCardHidden());}}>Go To Checkout</CustomButton>
+            {cardItems.length && user ? <CustomButton onClick={() => {history.push('/checkout'); dispatch(toggleCardHidden());}}>Go To Checkout</CustomButton> : <CustomButton onClick={() => {history.push('/signin'); dispatch(toggleCardHidden());}}>Go to sign in or sing up</CustomButton>}
         </div>
     )
 }
 
 const mapStateToProps = createStructuredSelector ({
-    cardItems : selectCardItems
+    cardItems : selectCardItems,
+    user : selectCurrentUser
 })
 
 export default withRouter(connect(mapStateToProps)(CardDropDown))

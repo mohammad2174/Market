@@ -5,6 +5,7 @@ import { clearItemFromCard , addItem , removeItem } from '../../redux/card/card.
 
 const CheckoutItem = ({cardItem , cleareItem , addItem , removeItem}) => {
     const { name , imageUrl , price , quantity } = cardItem
+
     return (
     <div className='checkout-item'>
         <div className='image-container'>
