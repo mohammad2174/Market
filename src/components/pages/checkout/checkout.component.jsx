@@ -31,7 +31,7 @@ const CheckoutPage = ({ cardItems , total, user, history }) => (
     {
       cardItems.length ? cardItems.map(cardItem => <CheckoutItem key={cardItem.id} cardItem={cardItem} />) : <span>Your Checkout is empty</span>
     }
-    <Confirm total={total} cardItems={cardItems} />
+    <Confirm total={total} cardItems={cardItems} user={user} />
     </div>
     :
     <div className='checkout-page'>

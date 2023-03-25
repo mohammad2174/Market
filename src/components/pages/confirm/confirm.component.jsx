@@ -1,10 +1,13 @@
 import React, { useRef, useState } from 'react';
 import FormInput from '../../form-input/form-input.component';
 import '../checkout/checkout.styles.scss'
-import emailjs from '@emailjs/browser'
+import { clearItemFromCard } from '../../../redux/card/card.action'
+import { connect } from 'react-redux'
+// import emailjs from '@emailjs/browser'
+import axios from 'axios';
 
 
-export default function ConfirmPage({total, cardItems}){
+const ConfirmPage = ({total, cardItems, user, cleareItem}) => {
     const form1 = useRef();
 
     const onUpdateField = e => {
@@ -25,11 +28,16 @@ export default function ConfirmPage({total, cardItems}){
       });
     const onSubmitForm = e => {
         e.preventDefault();
-        emailjs.sendForm('service_wh1tko1', 'template_qhcbm0y', form1.current, 'ZmTSurbMfBR4GpUVC').then((result) => {
-            console.log(result.text);
-        }, (error) => {
-            console.log(error.text);
-        });
+        // emailjs.sendForm('service_wh1tko1', 'template_qhcbm0y', form1.current, 'ZmTSurbMfBR4GpUVC').then((result) => {
+        //     console.log(result.text);
+        // }, (error) => {
+        //     console.log(error.text);
+        // });
+        axios.post(`http://localhost/reactMarketPhp/insertConfirm.php?name=${form.name}&id_cat=${cardItems.map(cardItem => cardItem.id).join(',')}&id_user=${user.currentUser.id}&total=${total}&quantity=${cardItems.map(cardItem => cardItem.quantity).join(',')}&email=${form.email}&phonenumber=${form.phonenumber}&city=${form.city}&address=${form.address}&postcode=${form.postcode}`)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(err => console.log(err))
       };
     console.log(form1.current);
     return (
@@ -53,9 +61,15 @@ export default function ConfirmPage({total, cardItems}){
             <FormInput onChange={onUpdateField} value={cardItem.quantity} />
         </div>)
         }
-        <button className='payment-button' value={total}>Confirm</button>
+        <button className='payment-button' onClick={() => cleareItem(cardItems[0]) && cleareItem(cardItems[1]) && cleareItem(cardItems[2]) && cleareItem(cardItems[3]) && cleareItem(cardItems[4]) && cleareItem(cardItems[5]) && cleareItem(cardItems[6]) && cleareItem(cardItems[7]) && cleareItem(cardItems[8]) && cleareItem(cardItems[9]) && cleareItem(cardItems[10])}>Confirm</button>
     </form>
         }
         </>
     )
 }
+
+const mapDispatchToProps = dispatch => ({
+  cleareItem : item => dispatch(clearItemFromCard(item))
+})
+
+export default connect(null , mapDispatchToProps)(ConfirmPage)
