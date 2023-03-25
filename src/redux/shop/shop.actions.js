@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 import shopActionType from './shop.types'
-// import { convertCollectionsSnapshotToMap, firestore, convertPhpToMap } from '../../firebase/firebase.utils'
-import { convertPhpToMap } from '../../firebase/firebase.utils'
+import { convertCollectionsSnapshotToMap, firestore } from '../../firebase/firebase.utils'
+// import { convertPhpToMap } from '../../firebase/firebase.utils'
 
 
 
@@ -20,21 +21,21 @@ export const fetchCollectionFailure = errorMessage => ({
 
 export const fetchCollectionStartAsync = () => {
     return dispatch => {
-        // const collectionRef = firestore.collection('collections')
-        //   dispatch(fetchCollectionStart())
-        // collectionRef.onSnapshot(async snapshot =>{
-        //      const collectionMap =  convertCollectionsSnapshotToMap(snapshot)
-        //      updateCollections(collectionMap)
-        //      this.setState({loading: false})
-        // // })
+        const collectionRef = firestore.collection('collections')
+          dispatch(fetchCollectionStart())
+        collectionRef.onSnapshot(async snapshot =>{
+             const collectionMap =  convertCollectionsSnapshotToMap(snapshot)
+             updateCollections(collectionMap)
+             this.setState({loading: false})
+        })
 
-        fetch('http://localhost/reactMarketPhp/getData.php')
-            .then(res => {
-                return res.json();
-            })
-        .then(data => {
-            const collectionMap = convertPhpToMap(data)
-            dispatch(fetchCollectionSuccess(collectionMap))
-        }).catch(error => dispatch(fetchCollectionFailure(error.message)))
+        // fetch('http://localhost/reactMarketPhp/getData.php')
+        //     .then(res => {
+        //         return res.json();
+        //     })
+        // .then(data => {
+        //     const collectionMap = convertPhpToMap(data)
+        //     dispatch(fetchCollectionSuccess(collectionMap))
+        // }).catch(error => dispatch(fetchCollectionFailure(error.message)))
     }
 }

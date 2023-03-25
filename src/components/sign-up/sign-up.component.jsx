@@ -2,10 +2,10 @@ import React from 'react';
 import './sign-up.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-// import { auth , createUserProfileDocument } from '../../firebase/firebase.utils';
+import { auth , createUserProfileDocument } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
 import { setCurrentUser } from '../../redux/user/user.action';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 class SignUp extends React.Component {
@@ -27,32 +27,32 @@ class SignUp extends React.Component {
             alert("pass don't match")
             return;
         }
-        // try {
-        //     const {user} = await auth.createUserWithEmailAndPassword(email, password)
-        //     await createUserProfileDocument(user, { displayName })
-        //     this.setState({
-        //         displayName : '',
-        //         email : '',
-        //         password : '',
-        //         confirmPassword : ''
-        //     })
-        // } catch (error) {
-        //     console.log(error);
-        // }
-        axios.post(`http://localhost/reactMarketPhp/insertUser.php?_ijt=rh1a4o5o085j0d3uelb9qsesjn&display_name=${displayName}&email=${email}&password=${password}`)
-        .then(response => {
-            console.log(response.data);
-            if (response.data === 200) {
-                this.props.setCurrentUser({
-                    currentUser: {
-                      id: response.data.id,
-                      email: response.data.email,
-                      display_name: response.data.display_name
-                    }
-                })
-            }
-        })
-        .catch(err => console.log(err))
+        try {
+            const {user} = await auth.createUserWithEmailAndPassword(email, password)
+            await createUserProfileDocument(user, { displayName })
+            this.setState({
+                displayName : '',
+                email : '',
+                password : '',
+                confirmPassword : ''
+            })
+        } catch (error) {
+            console.log(error);
+        }
+        // axios.post(`http://localhost/reactMarketPhp/insertUser.php?_ijt=rh1a4o5o085j0d3uelb9qsesjn&display_name=${displayName}&email=${email}&password=${password}`)
+        // .then(response => {
+        //     console.log(response.data);
+        //     if (response.data === 200) {
+        //         this.props.setCurrentUser({
+        //             currentUser: {
+        //               id: response.data.id,
+        //               email: response.data.email,
+        //               display_name: response.data.display_name
+        //             }
+        //         })
+        //     }
+        // })
+        // .catch(err => console.log(err))
     }
 
     handleChange = e => {
